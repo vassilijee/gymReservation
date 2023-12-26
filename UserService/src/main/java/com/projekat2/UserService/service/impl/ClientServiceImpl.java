@@ -1,5 +1,6 @@
 package com.projekat2.UserService.service.impl;
 
+import com.projekat2.UserService.dto.client.ClientCreateDto;
 import com.projekat2.UserService.dto.client.ClientDto;
 import com.projekat2.UserService.mapper.ClientMapper;
 import com.projekat2.UserService.repository.ClientRepository;
@@ -34,6 +35,22 @@ public class ClientServiceImpl implements ClientService {
     public Page<ClientDto> findAll(Pageable pageable) {
         return clientRepository.findAll(pageable)
                 .map(clientMapper::clientToClientDto);
+    }
+
+    @Override
+    public ClientDto findById(Long id) {
+        return clientRepository.findById(id).map(clientMapper::clientToClientDto).get();
+    }
+
+    @Override
+    public ClientDto add(ClientCreateDto clientCreateDto) {
+        return null;
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        clientRepository.deleteById(id);
+
     }
 
 }

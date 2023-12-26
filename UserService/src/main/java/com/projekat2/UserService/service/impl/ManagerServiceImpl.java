@@ -1,5 +1,7 @@
 package com.projekat2.UserService.service.impl;
 
+import com.projekat2.UserService.domain.Manager;
+import com.projekat2.UserService.dto.manager.ManagerCreateDto;
 import com.projekat2.UserService.dto.manager.ManagerDto;
 import com.projekat2.UserService.mapper.ManagerMapper;
 import com.projekat2.UserService.repository.ManagerRepository;
@@ -34,5 +36,22 @@ public class ManagerServiceImpl implements ManagerService {
     public Page<ManagerDto> findAll(Pageable pageable) {
         return managerRepository.findAll(pageable)
                 .map(managerMapper::managerToManagerDto);
+    }
+
+    @Override
+    public ManagerDto findById(Long id) {
+        return managerRepository.findById(id).map(managerMapper::managerToManagerDto).get();
+    }
+
+    @Override
+    public ManagerDto add(ManagerCreateDto managerCreateDto) {
+        Manager manager = managerMapper.managerCreateDtotoManager(managerCreateDto);
+        managerRepository.save(manager);
+        return managerMapper.managerToManagerDto(manager);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        managerRepository.deleteById(id);
     }
 }

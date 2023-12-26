@@ -7,10 +7,12 @@ import org.springframework.data.domain.Pageable;
 
 public interface SessionService {
     Page<SessionDto> findAll(Pageable pageable);
+
     SessionDto findById(Long id);
 
     SessionDto add(SessionCreateDto sessionCreateDto);
 
     //GymDto update(Long id, G productUpdateDto);
 
-    void deleteById(Long id);}
+    void deleteById(Long id);
+}
