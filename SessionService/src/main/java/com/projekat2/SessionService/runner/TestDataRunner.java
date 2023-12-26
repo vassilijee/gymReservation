@@ -48,8 +48,8 @@ public class TestDataRunner implements CommandLineRunner {
         ExerciseType exerciseType2 = exerciseTypeRepository.save(new ExerciseType("exercise 2", "group", 3000));
         ExerciseType exerciseType3 = exerciseTypeRepository.save(new ExerciseType("exercise 3", "group", 2000));
         //insert sessions
-        sessionRepository.save(new Session(gym1, exerciseType1, 0));
-        sessionRepository.save(new Session(gym1, exerciseType2, 0));
-        sessionRepository.save(new Session(gym2, exerciseType3, 0));
+        sessionRepository.save(new Session(gym1, exerciseType1, 1));
+        sessionRepository.save(new Session(gym1, exerciseType2, 1));
+        sessionRepository.save(new Session(gym2, exerciseType3, 1));
     }
 }
