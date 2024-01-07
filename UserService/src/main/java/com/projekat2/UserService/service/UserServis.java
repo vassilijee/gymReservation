@@ -16,7 +16,7 @@ public interface UserServis {
     Page<UserDto> findAll(Pageable pageable);
 
     //napraviti pojedinacne metode za svaki tip usera po potrebi njihovoj i koristi njjihov dto
-//    ClientDto findClient(Long id);
+    ClientDto findClientById(Long id);
 
     ClientDto registerClient(ClientCreateDto clientCreateDto);
     ClientDto updateClient(ClientUpdateDto clientUpdateDto);

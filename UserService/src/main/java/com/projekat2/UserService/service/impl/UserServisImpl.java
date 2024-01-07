@@ -43,10 +43,10 @@ public class UserServisImpl implements UserServis {
                 .map(userMapper::userToUserDto);
     }
 
-//    @Override
-//    public ClientDto findClient(Long id) {
-//        return userRepository.findClient(id).map(clientMapper::clientToClientDto).orElseThrow(()-> new NotFoundException("User ciji je id:" + id + "nije pronadjen"));
-//    }
+    @Override
+    public ClientDto findClientById(Long id) {
+        return userRepository.findClientById(id).map(clientMapper::clientToClientDto).orElseThrow(()-> new NotFoundException("User ciji je id:" + id + "nije pronadjen"));
+    }
 
     @Override
     public ClientDto registerClient(ClientCreateDto clientCreateDto) {

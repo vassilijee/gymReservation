@@ -29,10 +29,10 @@ public class ClientController {
 //        return new ResponseEntity<>(gymService.findAll(pageable), HttpStatus.OK);
 //    }
 
-//    @GetMapping("/{id}")
-//    public ResponseEntity<ClientDto> findClient(@PathVariable("id") Long id) {
-//        return new ResponseEntity<>(userServis.findClient(id), HttpStatus.OK);
-//    }
+    @GetMapping("/{id}")
+    public ResponseEntity<ClientDto> findClientById(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(userServis.findClientById(id), HttpStatus.OK);
+    }
 
     @PostMapping
     public ResponseEntity<ClientDto> registerClient(@RequestBody @Valid ClientCreateDto clientCreateDto) {
