@@ -1,7 +1,7 @@
 package com.projekat2.UserService.domain;
 
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,8 +9,7 @@ import lombok.Setter;
 @Setter
 
 @Entity
-@Table(name = "admin")
-
+@DiscriminatorValue("Admin")
 public class Admin extends User {
     public Admin(String email, String firstName, String lastName, String username, String password) {
         super(email, firstName, lastName, username, password);

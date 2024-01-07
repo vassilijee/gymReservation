@@ -1,7 +1,7 @@
 package com.projekat2.UserService.domain;
 
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
 import org.apache.commons.lang3.RandomStringUtils;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "client")
+@DiscriminatorValue("Client")
 public class Client extends User {
     private Integer membershipNumber;
     private Integer sessionCount;
@@ -22,7 +22,7 @@ public class Client extends User {
         this.membershipNumber = membershipNumber;
         this.sessionCount = sessionCount;
 
-        int desiredLength = 10;
+        int desiredLength = 15;
         this.activateCode = RandomStringUtils.randomAlphanumeric(desiredLength);
         this.activate = true;
         this.blocked = false;

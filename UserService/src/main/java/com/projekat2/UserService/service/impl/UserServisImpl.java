@@ -1,0 +1,113 @@
+package com.projekat2.UserService.service.impl;
+
+import com.projekat2.UserService.domain.Client;
+import com.projekat2.UserService.domain.Manager;
+import com.projekat2.UserService.dto.UserDto;
+import com.projekat2.UserService.dto.client.ClientBlockDto;
+import com.projekat2.UserService.dto.client.ClientCreateDto;
+import com.projekat2.UserService.dto.client.ClientDto;
+import com.projekat2.UserService.dto.client.ClientUpdateDto;
+import com.projekat2.UserService.dto.manager.ManagerBlockDto;
+import com.projekat2.UserService.dto.manager.ManagerCreateDto;
+import com.projekat2.UserService.dto.manager.ManagerDto;
+import com.projekat2.UserService.dto.manager.ManagerUpdateDto;
+import com.projekat2.UserService.exception.NotFoundException;
+import com.projekat2.UserService.mapper.ClientMapper;
+import com.projekat2.UserService.mapper.ManagerMapper;
+import com.projekat2.UserService.mapper.UserMapper;
+import com.projekat2.UserService.repository.UserRepository;
+import com.projekat2.UserService.service.UserServis;
+import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+@Service
+@Transactional
+public class UserServisImpl implements UserServis {
+    private UserRepository userRepository;
+    private UserMapper userMapper;
+    private ClientMapper clientMapper;
+    private ManagerMapper managerMapper;
+
+    public UserServisImpl(UserRepository userRepository, UserMapper userMapper, ClientMapper clientMapper, ManagerMapper managerMapper) {
+        this.userRepository = userRepository;
+        this.userMapper = userMapper;
+        this.clientMapper = clientMapper;
+        this.managerMapper = managerMapper;
+    }
+
+    @Override
+    public Page<UserDto> findAll(Pageable pageable) {
+        return userRepository.findAll(pageable)
+                .map(userMapper::userToUserDto);
+    }
+
+//    @Override
+//    public ClientDto findClient(Long id) {
+//        return userRepository.findClient(id).map(clientMapper::clientToClientDto).orElseThrow(()-> new NotFoundException("User ciji je id:" + id + "nije pronadjen"));
+//    }
+
+    @Override
+    public ClientDto registerClient(ClientCreateDto clientCreateDto) {
+        return null;
+    }
+
+    @Override
+    public ClientDto updateClient(ClientUpdateDto clientUpdateDto) {
+        Client client = (Client) userRepository.findById(clientUpdateDto.getId()).orElseThrow(()->new NotFoundException("User ciji je id:" + clientUpdateDto.getId() + "nije pronadjen"));
+
+        client.setFirstName(clientUpdateDto.getFirstName());
+        client.setLastName(clientUpdateDto.getLastName());
+        client.setEmail(clientUpdateDto.getEmail());
+        client.setUsername(clientUpdateDto.getUsername());
+        client.setPassword(clientUpdateDto.getPassword());
+
+        userRepository.save(client);
+        return clientMapper.clientToClientDto(client);
+    }
+
+    @Override
+    public ClientDto blockClient(ClientBlockDto clientBlockDto) {
+        Client client =(Client) userRepository.findById(clientBlockDto.getId()).orElseThrow(()->new NotFoundException("User ciji je id:" + clientBlockDto.getId() + "nije pronadjen"));
+
+        client.setBlocked(clientBlockDto.isBlocked());
+
+        userRepository.save(client);
+        return clientMapper.clientToClientDto(client);
+    }
+
+    @Override
+    public ManagerDto registerManager(ManagerCreateDto managerCreateDto) {
+        return null;
+    }
+
+    @Override
+    public ManagerDto updateManager(ManagerUpdateDto managerUpdateDto) {
+        Manager manager = (Manager) userRepository.findById(managerUpdateDto.getId()).orElseThrow(()->new NotFoundException("User ciji je id:" + managerUpdateDto.getId() + "nije pronadjen"));
+
+        manager.setFirstName(managerUpdateDto.getFirstName());
+        manager.setLastName(managerUpdateDto.getLastName());
+        manager.setEmail(managerUpdateDto.getEmail());
+        manager.setUsername(managerUpdateDto.getUsername());
+        manager.setPassword(managerUpdateDto.getPassword());
+
+        userRepository.save(manager);
+        return managerMapper.managerToManagerDto(manager);
+    }
+
+    @Override
+    public ManagerDto blockManager(ManagerBlockDto managerBlockDto) {
+        Manager manager = (Manager) userRepository.findById(managerBlockDto.getId()).orElseThrow(()->new NotFoundException("User ciji je id:" + managerBlockDto.getId() + "nije pronadjen"));
+
+        manager.setBlocked(managerBlockDto.isBlocked());
+
+        userRepository.save(manager);
+        return managerMapper.managerToManagerDto(manager);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        userRepository.deleteById(id);
+    }
+}

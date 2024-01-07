@@ -5,9 +5,12 @@ import lombok.Getter;
 import lombok.Setter;
 @Getter
 @Setter
-
-@MappedSuperclass
-public abstract class User {
+@Entity
+@Table(name = "allUsers")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn (discriminatorType = DiscriminatorType.STRING,
+name = "UserType")
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

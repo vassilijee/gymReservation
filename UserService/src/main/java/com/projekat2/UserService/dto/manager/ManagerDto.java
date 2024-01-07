@@ -1,19 +1,21 @@
 package com.projekat2.UserService.dto.manager;
 
+import com.projekat2.UserService.dto.UserDto;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Getter
 @Setter
-public class ManagerDto {
-    private Long id;
-    private String email;
-    private String firstName;
-    private String lastName;
-    private String username;
+public class ManagerDto extends UserDto {
+
     private String gymName;
     private LocalDate startDate;
+
+    public ManagerDto(String email, String firstName, String lastName, String username, String gymName, LocalDate startDate) {
+        super(email, firstName, lastName, username);
+        this.gymName = gymName;
+        this.startDate = startDate;
+    }
 }

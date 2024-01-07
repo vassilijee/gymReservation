@@ -1,16 +1,17 @@
-package com.projekat2.UserService.dto.admin;
+package com.projekat2.UserService.dto;
+
 
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+
 
 @Getter
 @Setter
-public class AdminCreateDto {
+public class UserCreateDto {
     @Email
     private String email;
     @NotBlank

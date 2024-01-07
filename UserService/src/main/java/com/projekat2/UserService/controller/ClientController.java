@@ -1,8 +1,10 @@
 package com.projekat2.UserService.controller;
 
+import com.projekat2.UserService.dto.client.ClientBlockDto;
 import com.projekat2.UserService.dto.client.ClientCreateDto;
 import com.projekat2.UserService.dto.client.ClientDto;
-import com.projekat2.UserService.service.ClientService;
+import com.projekat2.UserService.dto.client.ClientUpdateDto;
+import com.projekat2.UserService.service.UserServis;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -14,10 +16,10 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/client")
 public class ClientController {
-    private ClientService clientService;
+    private UserServis userServis;
 
-    public ClientController(ClientService clientService) {
-        this.clientService = clientService;
+    public ClientController(UserServis userServis) {
+        this.userServis = userServis;
     }
 
 //    @GetMapping
@@ -27,24 +29,29 @@ public class ClientController {
 //        return new ResponseEntity<>(gymService.findAll(pageable), HttpStatus.OK);
 //    }
 
-    @GetMapping
-    public ResponseEntity<Page<ClientDto>> getAllGyms(Pageable pageable) {
-        return new ResponseEntity<>(clientService.findAll(pageable), HttpStatus.OK);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<ClientDto> findById(@PathVariable("id") Long id) {
-        return new ResponseEntity<>(clientService.findById(id), HttpStatus.OK);
-    }
+//    @GetMapping("/{id}")
+//    public ResponseEntity<ClientDto> findClient(@PathVariable("id") Long id) {
+//        return new ResponseEntity<>(userServis.findClient(id), HttpStatus.OK);
+//    }
 
     @PostMapping
-    public ResponseEntity<ClientDto> add(@RequestBody @Valid ClientCreateDto clientCreateDto) {
-        return new ResponseEntity<>(clientService.add(clientCreateDto), HttpStatus.CREATED);
+    public ResponseEntity<ClientDto> registerClient(@RequestBody @Valid ClientCreateDto clientCreateDto) {
+        return new ResponseEntity<>(userServis.registerClient(clientCreateDto), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<ClientDto> updateClient(@RequestBody @Valid ClientUpdateDto clientUpdateDto) {
+        return new ResponseEntity<>(userServis.updateClient(clientUpdateDto), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/block")
+    public ResponseEntity<ClientDto> blockClient(@RequestBody @Valid ClientBlockDto clientBlockDto) {
+        return new ResponseEntity<>(userServis.blockClient(clientBlockDto), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
-        clientService.deleteById(id);
+        userServis.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

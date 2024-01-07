@@ -1,22 +1,16 @@
 package com.projekat2.UserService.mapper;
 
 import com.projekat2.UserService.domain.Client;
+import com.projekat2.UserService.dto.client.ClientBlockDto;
 import com.projekat2.UserService.dto.client.ClientCreateDto;
 import com.projekat2.UserService.dto.client.ClientDto;
+import com.projekat2.UserService.dto.client.ClientUpdateDto;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ClientMapper {
     public ClientDto clientToClientDto(Client client) {
-        ClientDto clientDto = new ClientDto();
-        clientDto.setId(client.getId());
-        clientDto.setEmail(client.getEmail());
-        clientDto.setFirstName(client.getFirstName());
-        clientDto.setLastName(client.getLastName());
-        clientDto.setUsername(client.getUsername());
-        clientDto.setMembershipNumber(client.getMembershipNumber());
-        clientDto.setSessionCount(client.getSessionCount());
-        return clientDto;
+        return new ClientDto(client.getEmail(),client.getFirstName(), client.getLastName(),client.getUsername(), client.getMembershipNumber(), client.getSessionCount());
     }
 
     public Client clientCreateDtoToClient(ClientCreateDto clientCreateDto) {
@@ -27,7 +21,17 @@ public class ClientMapper {
         client.setUsername(clientCreateDto.getUsername());
         client.setPassword(clientCreateDto.getPassword());
         client.setMembershipNumber(clientCreateDto.getMembershipNumber());
-        client.setSessionCount(clientCreateDto.getSessionCount());
+        client.setSessionCount(0);
         return client;
+    }
+
+    public Client clientUpdateDtoToClient(ClientUpdateDto clientUpdateDto){
+
+        return null;
+    }
+
+    public Client clientBlockDtoToClient(ClientBlockDto clientBlockDto){
+
+        return  null;
     }
 }

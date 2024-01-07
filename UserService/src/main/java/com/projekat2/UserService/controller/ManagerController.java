@@ -1,11 +1,10 @@
 package com.projekat2.UserService.controller;
 
-import com.projekat2.UserService.dto.client.ClientCreateDto;
-import com.projekat2.UserService.dto.client.ClientDto;
+import com.projekat2.UserService.dto.manager.ManagerBlockDto;
 import com.projekat2.UserService.dto.manager.ManagerCreateDto;
 import com.projekat2.UserService.dto.manager.ManagerDto;
-import com.projekat2.UserService.service.ClientService;
-import com.projekat2.UserService.service.ManagerService;
+import com.projekat2.UserService.dto.manager.ManagerUpdateDto;
+import com.projekat2.UserService.service.UserServis;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -17,10 +16,10 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/manager")
 public class ManagerController {
-    private ManagerService managerService;
+    private UserServis userServis;
 
-    public ManagerController(ManagerService managerService) {
-        this.managerService = managerService;
+    public ManagerController(UserServis userServis) {
+        this.userServis = userServis;
     }
 
 //    @GetMapping
@@ -30,24 +29,25 @@ public class ManagerController {
 //        return new ResponseEntity<>(gymService.findAll(pageable), HttpStatus.OK);
 //    }
 
-    @GetMapping
-    public ResponseEntity<Page<ManagerDto>> getAllGyms(Pageable pageable) {
-        return new ResponseEntity<>(managerService.findAll(pageable), HttpStatus.OK);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<ManagerDto> findById(@PathVariable("id") Long id) {
-        return new ResponseEntity<>(managerService.findById(id), HttpStatus.OK);
-    }
-
     @PostMapping
-    public ResponseEntity<ManagerDto> add(@RequestBody @Valid ManagerCreateDto managerCreateDto) {
-        return new ResponseEntity<>(managerService.add(managerCreateDto), HttpStatus.CREATED);
+    public ResponseEntity<ManagerDto> registerManager(@RequestBody @Valid ManagerCreateDto managerCreateDto) {
+        return new ResponseEntity<>(userServis.registerManager(managerCreateDto), HttpStatus.CREATED);
     }
+
+    @PutMapping("/update")
+    public ResponseEntity<ManagerDto> updateManager(@RequestBody @Valid ManagerUpdateDto managerUpdateDto) {
+        return new ResponseEntity<>(userServis.updateManager(managerUpdateDto), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/block")
+    public ResponseEntity<ManagerDto> blockManager(@RequestBody @Valid ManagerBlockDto managerBlockDto) {
+        return new ResponseEntity<>(userServis.blockManager(managerBlockDto), HttpStatus.CREATED);
+    }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
-        managerService.deleteById(id);
+        userServis.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ClientCreateDto extends UserCreateDto {
-
-    private Integer membershipNumber;
+public class ClientBlockDto extends UserCreateDto {
+    private Long id;
+    private boolean blocked;
 }

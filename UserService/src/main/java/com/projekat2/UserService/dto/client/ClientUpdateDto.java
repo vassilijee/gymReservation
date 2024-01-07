@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ClientCreateDto extends UserCreateDto {
+public class ClientUpdateDto extends UserCreateDto {
+    private  Long id;
 
-    private Integer membershipNumber;
 }
