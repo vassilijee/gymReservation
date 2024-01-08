@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-public class ManagerCreateDto extends UserCreateDto {
+public class ManagerCreateDto  extends UserCreateDto {
 
     @NotBlank
     private String gymName;

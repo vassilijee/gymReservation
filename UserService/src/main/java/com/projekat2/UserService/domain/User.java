@@ -30,4 +30,9 @@ public class User {
 
     public User() {
     }
+
+    @Transient
+    public String getDecriminatorValue() {
+        return this.getClass().getAnnotation(DiscriminatorValue.class).value();
+    }
 }

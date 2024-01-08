@@ -1,5 +1,7 @@
 package com.projekat2.UserService.service;
 
+import com.projekat2.UserService.dto.token.TokenRequestDto;
+import com.projekat2.UserService.dto.token.TokenResponseDto;
 import com.projekat2.UserService.dto.UserDto;
 import com.projekat2.UserService.dto.client.ClientBlockDto;
 import com.projekat2.UserService.dto.client.ClientCreateDto;
@@ -26,4 +28,7 @@ public interface UserServis {
     ManagerDto blockManager(ManagerBlockDto managerBlockDto);
 
     void deleteById(Long id);
+
+    TokenResponseDto login(TokenRequestDto tokenRequestDto);
+
 }

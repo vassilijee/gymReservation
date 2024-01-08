@@ -15,7 +15,7 @@ public class Client extends User {
     private Integer sessionCount;
     private String activateCode;
     private boolean activate;
-    private boolean blocked;
+    private boolean banned;
 
     public Client(String email, String firstName, String lastName, String username, String password, Integer membershipNumber, Integer sessionCount) {
         super(email, firstName, lastName, username, password);
@@ -25,7 +25,7 @@ public class Client extends User {
         int desiredLength = 15;
         this.activateCode = RandomStringUtils.randomAlphanumeric(desiredLength);
         this.activate = true;
-        this.blocked = false;
+        this.banned = false;
 
     }
 

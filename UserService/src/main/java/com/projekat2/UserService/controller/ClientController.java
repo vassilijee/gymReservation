@@ -4,9 +4,8 @@ import com.projekat2.UserService.dto.client.ClientBlockDto;
 import com.projekat2.UserService.dto.client.ClientCreateDto;
 import com.projekat2.UserService.dto.client.ClientDto;
 import com.projekat2.UserService.dto.client.ClientUpdateDto;
+import com.projekat2.UserService.secutiry.CheckSecurity;
 import com.projekat2.UserService.service.UserServis;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +29,8 @@ public class ClientController {
 //    }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ClientDto> findClientById(@PathVariable("id") Long id) {
+    @CheckSecurity(roles = {"Admin"})
+    public ResponseEntity<ClientDto> findClientById(@RequestHeader("authorization") String authorization, @PathVariable("id") Long id) {
         return new ResponseEntity<>(userServis.findClientById(id), HttpStatus.OK);
     }
 
@@ -54,4 +54,6 @@ public class ClientController {
         userServis.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+
 }

@@ -17,7 +17,7 @@ public class Manager extends User {
     private LocalDate startDate;
     private String activateCode;
     private boolean activate;
-    private boolean blocked;
+    private boolean banned;
 
     public Manager(String email, String firstName, String lastName, String username, String password, String gymName, LocalDate startDate) {
         super(email, firstName, lastName, username, password);
@@ -27,7 +27,7 @@ public class Manager extends User {
         int desiredLength = 15;
         this.activateCode = RandomStringUtils.randomAlphanumeric(desiredLength);
         this.activate = true;
-        this.blocked = false;
+        this.banned = false;
     }
 
     public Manager() {

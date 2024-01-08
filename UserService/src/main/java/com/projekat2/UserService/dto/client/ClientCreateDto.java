@@ -7,6 +7,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ClientCreateDto extends UserCreateDto {
-
     private Integer membershipNumber;
 }
