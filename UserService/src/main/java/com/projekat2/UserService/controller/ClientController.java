@@ -29,7 +29,7 @@ public class ClientController {
 //    }
 
     @GetMapping("/{id}")
-    @CheckSecurity(roles = {"Admin"})
+    @CheckSecurity(roles = {"Admin", "Manager", "Client"})
     public ResponseEntity<ClientDto> findClientById(@RequestHeader("authorization") String authorization, @PathVariable("id") Long id) {
         return new ResponseEntity<>(userServis.findClientById(id), HttpStatus.OK);
     }
@@ -40,17 +40,20 @@ public class ClientController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<ClientDto> updateClient(@RequestBody @Valid ClientUpdateDto clientUpdateDto) {
+    @CheckSecurity(roles = {"Admin", "Manager"})
+    public ResponseEntity<ClientDto> updateClient(@RequestHeader("authorization") String authorization, @RequestBody @Valid ClientUpdateDto clientUpdateDto) {
         return new ResponseEntity<>(userServis.updateClient(clientUpdateDto), HttpStatus.CREATED);
     }
 
     @PutMapping("/block")
-    public ResponseEntity<ClientDto> blockClient(@RequestBody @Valid ClientBlockDto clientBlockDto) {
+    @CheckSecurity(roles = {"Admin", "Manager"})
+    public ResponseEntity<ClientDto> blockClient(@RequestHeader("authorization") String authorization, @RequestBody @Valid ClientBlockDto clientBlockDto) {
         return new ResponseEntity<>(userServis.blockClient(clientBlockDto), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+    @CheckSecurity(roles = {"Admin", "Manager"})
+    public ResponseEntity<?> delete(@RequestHeader("authorization") String authorization, @PathVariable("id") Long id) {
         userServis.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

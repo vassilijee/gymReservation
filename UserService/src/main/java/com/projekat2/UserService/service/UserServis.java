@@ -19,6 +19,8 @@ public interface UserServis {
 
     //napraviti pojedinacne metode za svaki tip usera po potrebi njihovoj i koristi njjihov dto
     ClientDto findClientById(Long id);
+    ManagerDto findManagerById(Long id);
+
 
     ClientDto registerClient(ClientCreateDto clientCreateDto);
     ClientDto updateClient(ClientUpdateDto clientUpdateDto);

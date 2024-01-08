@@ -58,6 +58,11 @@ public class UserServisImpl implements UserServis {
     }
 
     @Override
+    public ManagerDto findManagerById(Long id) {
+        return userRepository.findManagerById(id).map(managerMapper::managerToManagerDto).orElseThrow(()-> new NotFoundException("User ciji je id:" + id + "nije pronadjen"));
+    }
+
+    @Override
     public ClientDto registerClient(ClientCreateDto clientCreateDto) {
         Client client = clientMapper.clientCreateDtoToClient(clientCreateDto);
         userRepository.save(client);

@@ -4,9 +4,8 @@ import com.projekat2.UserService.dto.manager.ManagerBlockDto;
 import com.projekat2.UserService.dto.manager.ManagerCreateDto;
 import com.projekat2.UserService.dto.manager.ManagerDto;
 import com.projekat2.UserService.dto.manager.ManagerUpdateDto;
+import com.projekat2.UserService.secutiry.CheckSecurity;
 import com.projekat2.UserService.service.UserServis;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,24 +28,34 @@ public class ManagerController {
 //        return new ResponseEntity<>(gymService.findAll(pageable), HttpStatus.OK);
 //    }
 
+    @GetMapping("/{id}")
+    @CheckSecurity(roles = {"Admin"})
+    public ResponseEntity<ManagerDto> findManagerById(@RequestHeader("authorization") String authorization, @PathVariable("id") Long id) {
+        return new ResponseEntity<>(userServis.findManagerById(id), HttpStatus.OK);
+    }
+
     @PostMapping
-    public ResponseEntity<ManagerDto> registerManager(@RequestBody @Valid ManagerCreateDto managerCreateDto) {
+    @CheckSecurity(roles = {"Admin"})
+    public ResponseEntity<ManagerDto> registerManager(@RequestHeader("authorization") String authorization, @RequestBody @Valid ManagerCreateDto managerCreateDto) {
         return new ResponseEntity<>(userServis.registerManager(managerCreateDto), HttpStatus.CREATED);
     }
 
     @PutMapping("/update")
-    public ResponseEntity<ManagerDto> updateManager(@RequestBody @Valid ManagerUpdateDto managerUpdateDto) {
+    @CheckSecurity(roles = {"Admin"})
+    public ResponseEntity<ManagerDto> updateManager(@RequestHeader("authorization") String authorization, @RequestBody @Valid ManagerUpdateDto managerUpdateDto) {
         return new ResponseEntity<>(userServis.updateManager(managerUpdateDto), HttpStatus.CREATED);
     }
 
     @PutMapping("/block")
-    public ResponseEntity<ManagerDto> blockManager(@RequestBody @Valid ManagerBlockDto managerBlockDto) {
+    @CheckSecurity(roles = {"Admin"})
+    public ResponseEntity<ManagerDto> blockManager(@RequestHeader("authorization") String authorization, @RequestBody @Valid ManagerBlockDto managerBlockDto) {
         return new ResponseEntity<>(userServis.blockManager(managerBlockDto), HttpStatus.CREATED);
     }
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+    @CheckSecurity(roles = {"Admin"})
+    public ResponseEntity<?> delete(@RequestHeader("authorization") String authorization, @PathVariable("id") Long id) {
         userServis.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

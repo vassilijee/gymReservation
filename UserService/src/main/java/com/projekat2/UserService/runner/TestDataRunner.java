@@ -28,8 +28,8 @@ public class TestDataRunner implements CommandLineRunner {
        Client client1 = userRepository.save(new Client("emalil1@email.com", "ime1", "prezime1", "username1", "password111", 1111, 0));
 //        Client client2 = userRepository.save(new Client("emalil2@email.com", "ime2", "prezime2", "username2", "password222", 2222, 0));
 ////        insert manager
-//        LocalDate myDate3 = LocalDate.of(2014, 2, 14);
-//        Manager manager1 = userRepository.save(new Manager("emalil1@email.com", "ime1", "prezime1", "username1", "password111", "gymName1", myDate3));
+        LocalDate myDate3 = LocalDate.of(2014, 2, 14);
+        Manager manager1 = userRepository.save(new Manager("manager@email.com", "ime1", "prezime1", "manager1", "password111", "gymName1", myDate3));
 //        Manager manager2 = userRepository.save(new Manager("emalil2@email.com", "ime2", "prezime2", "username2", "password222", "gymName2", myDate3));
 //        insert admin
         Admin admin1 = userRepository.save(new Admin("admin@gmail.com", "Pera", "Peric", "admin", "admin123"));
