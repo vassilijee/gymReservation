@@ -32,11 +32,11 @@ public class SessionController {
     public ResponseEntity<Page<SessionDto>> getAllSessions(Pageable pageable) {
         return new ResponseEntity<>(sessionService.findAll(pageable), HttpStatus.OK);
     }
-    @GetMapping("/free")
+    @GetMapping("/allfree")
     public ResponseEntity<Page<SessionDto>> getAllFreeSessions(Pageable pageable) {
         return new ResponseEntity<>(sessionService.findAllFreeSessions(pageable), HttpStatus.OK);
     }
-    //dal praviti za svaki ovaj poseban dto
+    //dal za svaki da se napravi poseban dto
 //    @GetMapping("/{groupType}")
 //    public ResponseEntity<Page<SessionDto>> getGroupTypeSessions(Pageable pageable) {
 //        return new ResponseEntity<>(sessionService.findGroupTypeSession(pageable), HttpStatus.OK);
@@ -61,10 +61,10 @@ public class SessionController {
 //    public ResponseEntity<Page<SessionDto>> getAllSessions(Pageable pageable) {
 //        return new ResponseEntity<>(sessionService.findAll(pageable), HttpStatus.OK);
 //    }
-//    @GetMapping
-//    public ResponseEntity<Page<SessionDto>> getAllSessions(Pageable pageable) {
-//        return new ResponseEntity<>(sessionService.findAll(pageable), HttpStatus.OK);
-//    }
+    @GetMapping("/sort")
+    public ResponseEntity<Page<SessionDto>> getSortSessions(Pageable pageable) {
+        return new ResponseEntity<>(sessionService.findsortByTimeSessions(pageable), HttpStatus.OK);
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<SessionDto> findById(@PathVariable("id") Long id) {

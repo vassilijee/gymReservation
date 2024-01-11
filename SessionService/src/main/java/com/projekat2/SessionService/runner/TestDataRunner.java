@@ -11,6 +11,8 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 
 @Profile({"default"})
@@ -35,8 +37,8 @@ public class TestDataRunner implements CommandLineRunner {
         ExerciseType yoga = exerciseTypeRepository.save(new ExerciseType("yoga", "group", 3000));
         ExerciseType pilates = exerciseTypeRepository.save(new ExerciseType("pilates", "group", 2000));
         //insert sessions
-        sessionRepository.save(new Session(gym, personal, 0, new Date(2024,1,13), new Time(10,0,0)));
-        sessionRepository.save(new Session(gym, yoga, 0, new Date(2024,1,13), new Time(11,0,0)));
-        sessionRepository.save(new Session(gym, pilates, 0, new Date(2024,1,13), new Time(12,0,0)));
+        sessionRepository.save(new Session(gym, personal, 0, LocalDate.of(2024,2,13), LocalTime.of(10,00)));
+        sessionRepository.save(new Session(gym, yoga, 0, LocalDate.of(2024,2,13), LocalTime.of(11,00), false));
+        sessionRepository.save(new Session(gym, pilates, 0, LocalDate.of(2024,2,13), LocalTime.of(12,00)));
     }
 }

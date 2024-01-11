@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 
 @Getter
@@ -22,20 +24,37 @@ public class Session {
     private ExerciseType exerciseType;
     private Integer currentCount;
 
-    private Date date;
-    private Time time;
+    private LocalDate date;
+    private LocalTime time;
     private boolean free;
     private int dayOfTheWeek;
 
-    public Session(Gym gym, ExerciseType exerciseType, Integer currentCount, Date date, Time time) {
+    public Session(Gym gym, ExerciseType exerciseType, Integer currentCount, LocalDate date, LocalTime time) {
         this.gym = gym;
         this.exerciseType = exerciseType;
         this.currentCount = currentCount;
         this.date = date;
         this.time = time;
         this.free = true;
+        this.dayOfTheWeek=date.getDayOfWeek().getValue();
+    }
+    public Session(Gym gym, ExerciseType exerciseType, Integer currentCount, LocalDate date, LocalTime time, boolean bo) {
+        this.gym = gym;
+        this.exerciseType = exerciseType;
+        this.currentCount = currentCount;
+        this.date = date;
+        this.time = time;
+        this.free = bo;
+        this.dayOfTheWeek=date.getDayOfWeek().getValue();
+    }
+    public Session() {
     }
 
-    public Session() {
+    public void currentCountPlus(){
+        currentCount=currentCount+1;
+    }
+
+    public void currentCountMinus(){
+        currentCount = currentCount-1;
     }
 }

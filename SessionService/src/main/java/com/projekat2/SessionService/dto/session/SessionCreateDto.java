@@ -7,6 +7,8 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 
 @Getter
@@ -18,7 +20,7 @@ public class SessionCreateDto {
     @JsonProperty("exercisetypeid")
     private Long exerciseTypeId;
     @NotBlank
-    private Date date;
+    private LocalDate date;
     @NotBlank
-    private Time time;
+    private LocalTime time;
 }

@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 
 @Getter
@@ -17,6 +19,6 @@ public class SessionDto {
     private GymDto gymDto;
     private ExerciseTypeDto exerciseTypeDto;
     private Integer currentCount;
-    private Date date;
-    private Time time;
+    private LocalDate date;
+    private LocalTime time;
 }

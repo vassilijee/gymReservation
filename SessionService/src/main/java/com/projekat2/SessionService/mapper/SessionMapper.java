@@ -34,7 +34,7 @@ public class SessionMapper {
         session.setCurrentCount(0);
         session.setGym(gymRepository.findById(sessionCreateDto.getGymId()).get());
         session.setExerciseType(exerciseTypeRepository.findById(sessionCreateDto.getExerciseTypeId()).get());
-        LocalDate localDate = session.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate localDate = session.getDate();
         session.setDayOfTheWeek(localDate.getDayOfWeek().getValue());
         return session;
     }

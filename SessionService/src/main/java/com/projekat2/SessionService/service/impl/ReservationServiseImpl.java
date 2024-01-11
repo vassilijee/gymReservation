@@ -1,12 +1,14 @@
 package com.projekat2.SessionService.service.impl;
 
 import com.projekat2.SessionService.domain.Reservation;
+import com.projekat2.SessionService.domain.Session;
 import com.projekat2.SessionService.dto.reservation.ReservationCreateDto;
 import com.projekat2.SessionService.dto.reservation.ReservationDto;
 import com.projekat2.SessionService.mapper.GymMapper;
 import com.projekat2.SessionService.mapper.ReservationMapper;
 import com.projekat2.SessionService.repository.GymRepository;
 import com.projekat2.SessionService.repository.ReservationRepository;
+import com.projekat2.SessionService.repository.SessionRepository;
 import com.projekat2.SessionService.service.ReservationService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,9 +22,10 @@ import java.util.List;
 public class ReservationServiseImpl implements ReservationService {
     private ReservationRepository reservationRepository;
     private ReservationMapper reservationMapper;
+    private SessionRepository sessionRepository;
 
-    public ReservationServiseImpl(ReservationRepository reservationRepository, ReservationMapper reservationMapper) {
-
+    public ReservationServiseImpl(ReservationRepository reservationRepository, ReservationMapper reservationMapper, SessionRepository sessionRepository) {
+        this.sessionRepository=sessionRepository;
        this.reservationRepository= reservationRepository;
        this.reservationMapper = reservationMapper;
     }
@@ -38,7 +41,11 @@ public class ReservationServiseImpl implements ReservationService {
 
     @Override
     public ReservationDto add(ReservationCreateDto reservationCreateDto) {
-        return reservationMapper.reservationToReservationDto(reservationRepository.save(reservationMapper.reservationCreateDtoToReservation(reservationCreateDto)));
+        Reservation reservation = reservationMapper.reservationCreateDtoToReservation(reservationCreateDto);
+        Session session = sessionRepository.findById(reservation.getSession().getId()).get();
+        session.currentCountPlus();
+        sessionRepository.save(session);
+        return reservationMapper.reservationToReservationDto(reservationRepository.save(reservation));
     }
 
     public void deleteReservationBySessionId(Long id){

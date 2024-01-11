@@ -52,6 +52,7 @@ public class GymServiceImpl implements GymService {
             gym.setGymDesc(gymUpdateDto.getGymDesc());
         if(gymUpdateDto.getPersonnelCount() == gym.getPersonnelCount())
             gym.setPersonnelCount(gymUpdateDto.getPersonnelCount());
+        gymRepository.save(gym);
         return  gymMapper.gymToGymDto(gym);
     }
 

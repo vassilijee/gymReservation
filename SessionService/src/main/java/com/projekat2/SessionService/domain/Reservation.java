@@ -20,6 +20,6 @@ public class Reservation {
     private Session session;
     @NotNull
     private Long clientId;
-
+    //private Integer price;
 
 }
