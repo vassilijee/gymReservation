@@ -8,6 +8,7 @@ import com.projekat2.NotificationService.mapper.EmailMapper;
 import com.projekat2.NotificationService.repository.EmailRepository;
 import com.projekat2.NotificationService.service.EmailService;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ public class EmailServiceImplementation implements EmailService {
 
     private EmailMapper emailMapper;
 
+    @Autowired
     public JavaMailSender mailSender;
 
     public EmailServiceImplementation(EmailRepository emailRepository, EmailMapper emailMapper, JavaMailSender mailSender) {

@@ -1,8 +1,9 @@
 package com.projekat2.NotificationService.listeners;
 
-import com.example.SK_Prj2_Rakic_Vasic.NotificationService.listeners.helper.MessageHelper;
-import com.example.SK_Prj2_Rakic_Vasic.NotificationService.mapper.NotificationTypeMapper;
-import com.example.SK_Prj2_Rakic_Vasic.NotificationService.service.EmailService;
+
+import com.projekat2.NotificationService.listeners.helper.MessageHelper;
+import com.projekat2.NotificationService.mapper.NotificationTypeMapper;
+import com.projekat2.NotificationService.service.EmailService;
 
 public class ReminderNotificationListener {
     private MessageHelper messageHelper;
