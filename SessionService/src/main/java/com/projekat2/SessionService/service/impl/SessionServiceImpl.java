@@ -89,6 +89,7 @@ public class SessionServiceImpl implements SessionService {
         reservationServis.deleteReservationBySessionId(session.getId());
         session.setFree(false);
         session.setCurrentCount(0);
+        sessionRepository.save(session);
     }
 
     @Override

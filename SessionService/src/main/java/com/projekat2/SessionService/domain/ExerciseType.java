@@ -16,11 +16,16 @@ public class ExerciseType {
     private String name;
     private String groupType;
     private Integer price;
+    private int discount;
 
-    public ExerciseType(String name, String groupType, Integer price) {
+    private int maxCount;
+
+    public ExerciseType(String name, String groupType, Integer price, int discount, int maxCount) {
         this.name = name;
         this.groupType = groupType;
         this.price = price;
+        this.discount = discount;
+        this.maxCount = maxCount;
     }
 
     public ExerciseType() {

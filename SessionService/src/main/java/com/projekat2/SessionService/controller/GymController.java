@@ -2,6 +2,8 @@ package com.projekat2.SessionService.controller;
 
 import com.projekat2.SessionService.dto.gym.GymCreateDto;
 import com.projekat2.SessionService.dto.gym.GymDto;
+import com.projekat2.SessionService.dto.gym.GymUpdateDto;
+import com.projekat2.SessionService.secutiry.CheckSecurity;
 import com.projekat2.SessionService.service.GymService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -43,6 +45,12 @@ public class GymController {
     @PostMapping
     public ResponseEntity<GymDto> add(@RequestBody @Valid GymCreateDto gymCreateDto) {
         return new ResponseEntity<>(gymService.add(gymCreateDto), HttpStatus.CREATED);
+    }
+
+    @PutMapping
+    @CheckSecurity(roles = {"Manager"})
+    public ResponseEntity<GymDto> update(@RequestHeader("authorization") String authorization, @RequestBody @Valid GymUpdateDto gymUpdateDto) {
+        return new ResponseEntity<>(gymService.update(gymUpdateDto), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")

@@ -2,6 +2,7 @@ package com.projekat2.SessionService.controller;
 
 import com.projekat2.SessionService.dto.exerciseType.ExerciseTypeCreateDto;
 import com.projekat2.SessionService.dto.exerciseType.ExerciseTypeDto;
+import com.projekat2.SessionService.secutiry.CheckSecurity;
 import com.projekat2.SessionService.service.ExerciseTypeService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,12 +39,14 @@ public class ExerciseTypeController {
     }
 
     @PostMapping
-    public ResponseEntity<ExerciseTypeDto> add(@RequestBody @Valid ExerciseTypeCreateDto exerciseTypeCreateDto) {
+    @CheckSecurity(roles = {"Manager"})
+    public ResponseEntity<ExerciseTypeDto> add(@RequestHeader("authorization") String authorization, @RequestBody @Valid ExerciseTypeCreateDto exerciseTypeCreateDto) {
         return new ResponseEntity<>(exerciseTypeService.add(exerciseTypeCreateDto), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+    @CheckSecurity(roles = {"Manager"})
+    public ResponseEntity<?> delete(@RequestHeader("authorization") String authorization, @PathVariable("id") Long id) {
         exerciseTypeService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

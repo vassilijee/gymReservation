@@ -46,11 +46,11 @@ public class GymServiceImpl implements GymService {
     @Override
     public GymDto update(GymUpdateDto gymUpdateDto) {
         Gym gym = gymRepository.findGymById(gymUpdateDto.getId()).get();
-        if(!gymUpdateDto.getGymName().equalsIgnoreCase(gym.getGymName()))
+        if(!gymUpdateDto.getGymName().matches(""))
             gym.setGymName(gymUpdateDto.getGymName());
-        if(!gymUpdateDto.getGymDesc().equalsIgnoreCase(gym.getGymDesc()))
+        if(!gymUpdateDto.getGymDesc().matches(""))
             gym.setGymDesc(gymUpdateDto.getGymDesc());
-        if(gymUpdateDto.getPersonnelCount() == gym.getPersonnelCount())
+        if(gymUpdateDto.getPersonnelCount() != 0)
             gym.setPersonnelCount(gymUpdateDto.getPersonnelCount());
         gymRepository.save(gym);
         return  gymMapper.gymToGymDto(gym);

@@ -21,6 +21,7 @@ public class GymMapper {
     }
 
     public Gym gymUpdateDtoToGym (GymUpdateDto gymUpdateDto){
+
         return null;
     }
 }

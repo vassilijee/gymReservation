@@ -1,5 +1,6 @@
 package com.projekat2.SessionService.service.impl;
 
+import com.projekat2.SessionService.client.userServis.dto.SessionCountDto;
 import com.projekat2.SessionService.domain.Reservation;
 import com.projekat2.SessionService.domain.Session;
 import com.projekat2.SessionService.dto.reservation.ReservationCreateDto;
@@ -12,8 +13,11 @@ import com.projekat2.SessionService.repository.SessionRepository;
 import com.projekat2.SessionService.service.ReservationService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -23,11 +27,13 @@ public class ReservationServiseImpl implements ReservationService {
     private ReservationRepository reservationRepository;
     private ReservationMapper reservationMapper;
     private SessionRepository sessionRepository;
+    private RestTemplate userServiceRestTemplate;
 
-    public ReservationServiseImpl(ReservationRepository reservationRepository, ReservationMapper reservationMapper, SessionRepository sessionRepository) {
+    public ReservationServiseImpl(ReservationRepository reservationRepository, ReservationMapper reservationMapper, SessionRepository sessionRepository, RestTemplate userServiceRestTemplate) {
         this.sessionRepository=sessionRepository;
        this.reservationRepository= reservationRepository;
        this.reservationMapper = reservationMapper;
+       this.userServiceRestTemplate = userServiceRestTemplate;
     }
     @Override
     public Page<ReservationDto> findAll(Pageable pageable) {
@@ -44,8 +50,19 @@ public class ReservationServiseImpl implements ReservationService {
         Reservation reservation = reservationMapper.reservationCreateDtoToReservation(reservationCreateDto);
         Session session = sessionRepository.findById(reservation.getSession().getId()).get();
         session.currentCountPlus();
+        if(session.getCurrentCount() == session.getExerciseType().getMaxCount())
+            session.setFree(false);
         sessionRepository.save(session);
-        return reservationMapper.reservationToReservationDto(reservationRepository.save(reservation));
+        ResponseEntity<SessionCountDto> sessionCountDtoResponseEntity = userServiceRestTemplate.exchange("/client/" +
+                reservation.getClientId() + "/count", HttpMethod.GET, null, SessionCountDto.class);
+        if(sessionCountDtoResponseEntity.getBody().getSessionCount()!=0 && sessionCountDtoResponseEntity.getBody().getSessionCount()%session.getExerciseType().getDiscount()==0)
+            reservation.setPrice(0);
+        else
+            reservation.setPrice(session.getExerciseType().getPrice());
+        reservationRepository.save(reservation);
+        userServiceRestTemplate.exchange("/client/" +
+                reservation.getClientId() + "/increment", HttpMethod.PUT, null, HttpMethod.class);
+        return reservationMapper.reservationToReservationDto(reservation);
     }
 
     public void deleteReservationBySessionId(Long id){

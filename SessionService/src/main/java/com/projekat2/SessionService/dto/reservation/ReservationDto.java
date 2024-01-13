@@ -11,4 +11,5 @@ import lombok.Setter;
 public class ReservationDto {
     private SessionDto sessionDto;
     private Long clientId;
+    private Integer price;
 }

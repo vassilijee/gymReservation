@@ -3,6 +3,7 @@ package com.projekat2.SessionService.controller;
 import com.projekat2.SessionService.dto.session.SessionCancelDto;
 import com.projekat2.SessionService.dto.session.SessionCreateDto;
 import com.projekat2.SessionService.dto.session.SessionDto;
+import com.projekat2.SessionService.secutiry.CheckSecurity;
 import com.projekat2.SessionService.service.SessionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -72,12 +73,14 @@ public class SessionController {
     }
 
     @PostMapping
-    public ResponseEntity<SessionDto> add(@RequestBody @Valid SessionCreateDto sessionCreateDto) {
+    @CheckSecurity(roles = {"Manager"})
+    public ResponseEntity<SessionDto> add(@RequestHeader("authorization") String authorization, @RequestBody @Valid SessionCreateDto sessionCreateDto) {
         return new ResponseEntity<>(sessionService.add(sessionCreateDto), HttpStatus.CREATED);
     }
 
     @PutMapping
-    public ResponseEntity<?> cancel(@RequestBody @Valid SessionCancelDto sessionCancelDto) {
+    @CheckSecurity(roles = {"Manager"})
+    public ResponseEntity<?> cancel(@RequestHeader("authorization") String authorization, @RequestBody @Valid SessionCancelDto sessionCancelDto) {
         sessionService.cancelSession(sessionCancelDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

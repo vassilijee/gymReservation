@@ -33,9 +33,9 @@ public class TestDataRunner implements CommandLineRunner {
         //insert gym
         Gym gym = gymRepository.save(new Gym("Gym", "Gym with space for all types of exercise.", 5));
         //insert exerciseType
-        ExerciseType personal = exerciseTypeRepository.save(new ExerciseType("personal training", "individual", 1500));
-        ExerciseType yoga = exerciseTypeRepository.save(new ExerciseType("yoga", "group", 3000));
-        ExerciseType pilates = exerciseTypeRepository.save(new ExerciseType("pilates", "group", 2000));
+        ExerciseType personal = exerciseTypeRepository.save(new ExerciseType("personal training", "individual", 1500, 15, 1));
+        ExerciseType yoga = exerciseTypeRepository.save(new ExerciseType("yoga", "group", 3000, 10, 15));
+        ExerciseType pilates = exerciseTypeRepository.save(new ExerciseType("pilates", "group", 2000, 20, 10));
         //insert sessions
         sessionRepository.save(new Session(gym, personal, 0, LocalDate.of(2024,2,13), LocalTime.of(10,00)));
         sessionRepository.save(new Session(gym, yoga, 0, LocalDate.of(2024,2,13), LocalTime.of(11,00), false));

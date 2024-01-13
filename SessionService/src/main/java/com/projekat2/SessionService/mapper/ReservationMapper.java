@@ -13,7 +13,7 @@ public class ReservationMapper {
     private SessionMapper sessionMapper;
     private SessionRepository sessionRepository;
     public ReservationDto reservationToReservationDto (Reservation reservation){
-        return new ReservationDto(sessionMapper.sessionToSessionDto(reservation.getSession()), reservation.getClientId());
+        return new ReservationDto(sessionMapper.sessionToSessionDto(reservation.getSession()), reservation.getClientId(), reservation.getPrice());
     }
     public Reservation reservationCreateDtoToReservation (ReservationCreateDto reservationCreateDto){
         Reservation reservation = new Reservation();

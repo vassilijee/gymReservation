@@ -12,4 +12,5 @@ public class ReservationCreateDto {
     @JsonProperty("sessionid")
     private Long sessionId;
     private Long clientId;
+
 }
