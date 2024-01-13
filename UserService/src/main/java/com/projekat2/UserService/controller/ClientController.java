@@ -1,9 +1,6 @@
 package com.projekat2.UserService.controller;
 
-import com.projekat2.UserService.dto.client.ClientBlockDto;
-import com.projekat2.UserService.dto.client.ClientCreateDto;
-import com.projekat2.UserService.dto.client.ClientDto;
-import com.projekat2.UserService.dto.client.ClientUpdateDto;
+import com.projekat2.UserService.dto.client.*;
 import com.projekat2.UserService.secutiry.CheckSecurity;
 import com.projekat2.UserService.service.UserServis;
 import org.springframework.http.HttpStatus;
@@ -34,6 +31,11 @@ public class ClientController {
         return new ResponseEntity<>(userServis.findClientById(id), HttpStatus.OK);
     }
 
+    @GetMapping("/{id}/count")
+    public ResponseEntity<SessionCountDto> getCount(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(userServis.getCount(id), HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<ClientDto> registerClient(@RequestBody @Valid ClientCreateDto clientCreateDto) {
         return new ResponseEntity<>(userServis.registerClient(clientCreateDto), HttpStatus.CREATED);
@@ -43,6 +45,12 @@ public class ClientController {
     @CheckSecurity(roles = {"Admin", "Manager"})
     public ResponseEntity<ClientDto> updateClient(@RequestHeader("authorization") String authorization, @RequestBody @Valid ClientUpdateDto clientUpdateDto) {
         return new ResponseEntity<>(userServis.updateClient(clientUpdateDto), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}/increment")
+    public ResponseEntity<?> updateClient(@PathVariable("id") Long id) {
+        userServis.incrementClintSessionCount(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/block")

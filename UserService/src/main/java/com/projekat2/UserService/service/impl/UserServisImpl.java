@@ -3,13 +3,10 @@ package com.projekat2.UserService.service.impl;
 import com.projekat2.UserService.domain.Client;
 import com.projekat2.UserService.domain.Manager;
 import com.projekat2.UserService.domain.User;
+import com.projekat2.UserService.dto.client.*;
 import com.projekat2.UserService.dto.token.TokenRequestDto;
 import com.projekat2.UserService.dto.token.TokenResponseDto;
 import com.projekat2.UserService.dto.UserDto;
-import com.projekat2.UserService.dto.client.ClientBlockDto;
-import com.projekat2.UserService.dto.client.ClientCreateDto;
-import com.projekat2.UserService.dto.client.ClientDto;
-import com.projekat2.UserService.dto.client.ClientUpdateDto;
 import com.projekat2.UserService.dto.manager.ManagerBlockDto;
 import com.projekat2.UserService.dto.manager.ManagerCreateDto;
 import com.projekat2.UserService.dto.manager.ManagerDto;
@@ -63,6 +60,14 @@ public class UserServisImpl implements UserServis {
     }
 
     @Override
+    public SessionCountDto getCount(Long id) {
+        Client client = userRepository.findClientById(id).get();
+        return new SessionCountDto(client.getSessionCount());
+    }
+
+
+
+    @Override
     public ClientDto registerClient(ClientCreateDto clientCreateDto) {
         Client client = clientMapper.clientCreateDtoToClient(clientCreateDto);
         userRepository.save(client);
@@ -72,13 +77,16 @@ public class UserServisImpl implements UserServis {
     @Override
     public ClientDto updateClient(ClientUpdateDto clientUpdateDto) {
         Client client = (Client) userRepository.findById(clientUpdateDto.getId()).orElseThrow(()->new NotFoundException("User ciji je id:" + clientUpdateDto.getId() + "nije pronadjen"));
-
-//        client.setFirstName(clientUpdateDto.getFirstName());
-//        client.setLastName(clientUpdateDto.getLastName());
-//        client.setEmail(clientUpdateDto.getEmail());
-//        client.setUsername(clientUpdateDto.getUsername());
-//        client.setPassword(clientUpdateDto.getPassword());
-
+        if(!clientUpdateDto.getFirstName().matches(""))
+            client.setFirstName(clientUpdateDto.getFirstName());
+        if(!clientUpdateDto.getLastName().matches(""))
+            client.setLastName(clientUpdateDto.getLastName());
+        if(!clientUpdateDto.getEmail().matches(""))
+            client.setEmail(clientUpdateDto.getEmail());
+        if(!clientUpdateDto.getUsername().matches(""))
+            client.setUsername(clientUpdateDto.getUsername());
+        if(!clientUpdateDto.getPassword().matches(""))
+            client.setPassword(clientUpdateDto.getPassword());
         userRepository.save(client);
         return clientMapper.clientToClientDto(client);
     }
@@ -103,11 +111,16 @@ public class UserServisImpl implements UserServis {
     public ManagerDto updateManager(ManagerUpdateDto managerUpdateDto) {
         Manager manager = (Manager) userRepository.findById(managerUpdateDto.getId()).orElseThrow(()->new NotFoundException("User ciji je id:" + managerUpdateDto.getId() + "nije pronadjen"));
 
-//        manager.setFirstName(managerUpdateDto.getFirstName());
-//        manager.setLastName(managerUpdateDto.getLastName());
-//        manager.setEmail(managerUpdateDto.getEmail());
-//        manager.setUsername(managerUpdateDto.getUsername());
-//        manager.setPassword(managerUpdateDto.getPassword());
+        if(!managerUpdateDto.getFirstName().matches(""))
+            manager.setFirstName(managerUpdateDto.getFirstName());
+        if(!managerUpdateDto.getLastName().matches(""))
+            manager.setLastName(managerUpdateDto.getLastName());
+        if(!managerUpdateDto.getEmail().matches(""))
+            manager.setEmail(managerUpdateDto.getEmail());
+        if(!managerUpdateDto.getUsername().matches(""))
+            manager.setUsername(managerUpdateDto.getUsername());
+        if(!managerUpdateDto.getPassword().matches(""))
+            manager.setPassword(managerUpdateDto.getPassword());
 
         userRepository.save(manager);
         return managerMapper.managerToManagerDto(manager);
@@ -121,6 +134,13 @@ public class UserServisImpl implements UserServis {
 
         userRepository.save(manager);
         return managerMapper.managerToManagerDto(manager);
+    }
+
+    @Override
+    public void incrementClintSessionCount(Long id) {
+        Client client = userRepository.findClientById(id).get();
+        client.incrementCount();
+        userRepository.save(client);
     }
 
     @Override
