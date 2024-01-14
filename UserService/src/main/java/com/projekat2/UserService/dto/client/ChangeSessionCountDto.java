@@ -9,8 +9,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SessionCountDto {
-
-    public Integer sessionCount;
-
+public class ChangeSessionCountDto {
+    private Long clientId;
 }

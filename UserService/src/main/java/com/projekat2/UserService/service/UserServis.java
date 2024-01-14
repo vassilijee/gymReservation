@@ -25,7 +25,9 @@ public interface UserServis {
     ManagerDto registerManager(ManagerCreateDto managerCreateDto);
     ManagerDto updateManager(ManagerUpdateDto managerUpdateDto);
     ManagerDto blockManager(ManagerBlockDto managerBlockDto);
-    void incrementClintSessionCount(Long id);
+    void incrementClintSessionCount(ChangeSessionCountDto changeSessionCountDto);
+    void activateClient(ActivateClientDto activateClientDto);
+    void decrementClintSessionCount(ChangeSessionCountDto changeSessionCountDto);
     void deleteById(Long id);
 
     TokenResponseDto login(TokenRequestDto tokenRequestDto);

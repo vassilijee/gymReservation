@@ -137,9 +137,23 @@ public class UserServisImpl implements UserServis {
     }
 
     @Override
-    public void incrementClintSessionCount(Long id) {
-        Client client = userRepository.findClientById(id).get();
-        client.incrementCount();
+    public void incrementClintSessionCount(ChangeSessionCountDto changeSessionCountDto) {
+        Client client = userRepository.findClientById(changeSessionCountDto.getClientId()).get();
+        client.setSessionCount(client.getSessionCount()+1);
+        userRepository.save(client);
+    }
+
+    @Override
+    public void activateClient(ActivateClientDto activateClientDto) {
+        Client client = userRepository.findClientById(activateClientDto.getClientId()).get();
+        client.setActivate(true);
+        userRepository.save(client);
+    }
+
+    @Override
+    public void decrementClintSessionCount(ChangeSessionCountDto changeSessionCountDto) {
+        Client client = userRepository.findClientById(changeSessionCountDto.getClientId()).get();
+        client.setSessionCount(client.getSessionCount()-1);
         userRepository.save(client);
     }
 

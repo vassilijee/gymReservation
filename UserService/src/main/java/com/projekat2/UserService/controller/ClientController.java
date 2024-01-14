@@ -47,11 +47,6 @@ public class ClientController {
         return new ResponseEntity<>(userServis.updateClient(clientUpdateDto), HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}/increment")
-    public ResponseEntity<?> updateClient(@PathVariable("id") Long id) {
-        userServis.incrementClintSessionCount(id);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
 
     @PutMapping("/block")
     @CheckSecurity(roles = {"Admin", "Manager"})

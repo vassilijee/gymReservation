@@ -32,7 +32,4 @@ public class Client extends User {
     public Client() {
     }
 
-    public void incrementCount(){
-        sessionCount = sessionCount +1;
-    }
 }
