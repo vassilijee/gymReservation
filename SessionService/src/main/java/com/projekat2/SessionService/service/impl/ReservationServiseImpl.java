@@ -4,6 +4,7 @@ import com.projekat2.SessionService.client.userServis.dto.ChangeSessionCountDto;
 import com.projekat2.SessionService.client.userServis.dto.SessionCountDto;
 import com.projekat2.SessionService.domain.Reservation;
 import com.projekat2.SessionService.domain.Session;
+import com.projekat2.SessionService.dto.reservation.ClientCancelReservationDto;
 import com.projekat2.SessionService.dto.reservation.ReservationCreateDto;
 import com.projekat2.SessionService.dto.reservation.ReservationDto;
 import com.projekat2.SessionService.helper.MessageHelper;
@@ -86,6 +87,15 @@ public class ReservationServiseImpl implements ReservationService {
             jmsTemplate.convertAndSend(decrement, messageHelper.createTextMessage(new ChangeSessionCountDto(reservation.getClientId())));
             deleteById(reservation.getId());
         }
+    }
+
+    @Override
+    public void clientCancelReservation(ClientCancelReservationDto clientCancelReservationDto) {
+        Reservation reservation = reservationRepository.findReservationByClientIdANDSessionId(clientCancelReservationDto.getClientId(), clientCancelReservationDto.getSessionId()).get();
+        //Slanje mail da je otkazan
+        reservationRepository.deleteById(reservation.getId());
+        ChangeSessionCountDto changeSessionCountDto = new ChangeSessionCountDto(reservation.getClientId());
+        jmsTemplate.convertAndSend(decrement,messageHelper.createTextMessage(changeSessionCountDto));
     }
 
     @Override
