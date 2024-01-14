@@ -12,6 +12,7 @@ import com.projekat2.UserService.dto.manager.ManagerCreateDto;
 import com.projekat2.UserService.dto.manager.ManagerDto;
 import com.projekat2.UserService.dto.manager.ManagerUpdateDto;
 import com.projekat2.UserService.exception.NotFoundException;
+import com.projekat2.UserService.listener.helper.MessageHelper;
 import com.projekat2.UserService.mapper.ClientMapper;
 import com.projekat2.UserService.mapper.ManagerMapper;
 import com.projekat2.UserService.mapper.UserMapper;
@@ -21,8 +22,10 @@ import com.projekat2.UserService.service.UserServis;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -33,14 +36,22 @@ public class UserServisImpl implements UserServis {
     private ClientMapper clientMapper;
     private ManagerMapper managerMapper;
     private TokenService tokenService;
+    private JmsTemplate jmsTemplate;
+    private String sendLink;
+    private MessageHelper messageHelper;
 
 
-    public UserServisImpl(UserRepository userRepository, UserMapper userMapper, ClientMapper clientMapper, ManagerMapper managerMapper, TokenService tokenService) {
+    public UserServisImpl(UserRepository userRepository, UserMapper userMapper, ClientMapper clientMapper,
+                          ManagerMapper managerMapper, TokenService tokenService, JmsTemplate jmsTemplate,
+                          @Value("${destination.increment.session.count}") String sendLink, MessageHelper messageHelper) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.clientMapper = clientMapper;
         this.managerMapper = managerMapper;
         this.tokenService = tokenService;
+        this.jmsTemplate=jmsTemplate;
+        this.sendLink = sendLink;
+        this.messageHelper= messageHelper;
     }
 
     @Override
@@ -71,6 +82,8 @@ public class UserServisImpl implements UserServis {
     public ClientDto registerClient(ClientCreateDto clientCreateDto) {
         Client client = clientMapper.clientCreateDtoToClient(clientCreateDto);
         userRepository.save(client);
+        SendLinkDto sendLinkDto = new SendLinkDto(client.getActivateCode(),client.getId(), client.getFirstName(), client.getLastName());
+        jmsTemplate.convertAndSend(sendLink, messageHelper.createTextMessage(sendLinkDto));
         return clientMapper.clientToClientDto(client);
     }
 
@@ -105,6 +118,8 @@ public class UserServisImpl implements UserServis {
     public ManagerDto registerManager(ManagerCreateDto managerCreateDto) {
         Manager manager = managerMapper.managerCreateDtoToManager(managerCreateDto);
         userRepository.save(manager);
+        SendLinkDto sendLinkDto = new SendLinkDto(manager.getActivateCode(),manager.getId(), manager.getFirstName(), manager.getLastName());
+        jmsTemplate.convertAndSend(sendLink, messageHelper.createTextMessage(sendLinkDto));
         return managerMapper.managerToManagerDto(manager);    }
 
     @Override
@@ -144,10 +159,17 @@ public class UserServisImpl implements UserServis {
     }
 
     @Override
-    public void activateClient(ActivateClientDto activateClientDto) {
-        Client client = userRepository.findClientById(activateClientDto.getClientId()).get();
-        client.setActivate(true);
-        userRepository.save(client);
+    public void activateUser(ActivateUserDto activateUserDto) {
+        User user = userRepository.findById(activateUserDto.getClientId()).get();
+        if (user.getDecriminatorValue().equalsIgnoreCase("Manager")){
+            Manager manager=(Manager)user;
+            manager.setActivate(true);
+            userRepository.save(manager);
+        }else{
+            Client client = (Client)user;
+            client.setActivate(true);
+            userRepository.save(client);
+        }
     }
 
     @Override

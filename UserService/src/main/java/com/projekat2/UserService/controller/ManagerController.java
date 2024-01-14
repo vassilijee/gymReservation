@@ -35,13 +35,13 @@ public class ManagerController {
     }
 
     @PostMapping
-    @CheckSecurity(roles = {"Admin"})
+    @CheckSecurity(roles = {"Manager"})
     public ResponseEntity<ManagerDto> registerManager(@RequestHeader("authorization") String authorization, @RequestBody @Valid ManagerCreateDto managerCreateDto) {
         return new ResponseEntity<>(userServis.registerManager(managerCreateDto), HttpStatus.CREATED);
     }
 
     @PutMapping("/update")
-    @CheckSecurity(roles = {"Admin"})
+    @CheckSecurity(roles = {"Manager"})
     public ResponseEntity<ManagerDto> updateManager(@RequestHeader("authorization") String authorization, @RequestBody @Valid ManagerUpdateDto managerUpdateDto) {
         return new ResponseEntity<>(userServis.updateManager(managerUpdateDto), HttpStatus.CREATED);
     }

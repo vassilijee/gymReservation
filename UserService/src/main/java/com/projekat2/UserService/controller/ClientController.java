@@ -26,7 +26,7 @@ public class ClientController {
 //    }
 
     @GetMapping("/{id}")
-    @CheckSecurity(roles = {"Admin", "Manager", "Client"})
+    @CheckSecurity(roles = {"Admin", "Manager"})
     public ResponseEntity<ClientDto> findClientById(@RequestHeader("authorization") String authorization, @PathVariable("id") Long id) {
         return new ResponseEntity<>(userServis.findClientById(id), HttpStatus.OK);
     }
@@ -37,12 +37,13 @@ public class ClientController {
     }
 
     @PostMapping
-    public ResponseEntity<ClientDto> registerClient(@RequestBody @Valid ClientCreateDto clientCreateDto) {
+    @CheckSecurity(roles = {"Client"})
+    public ResponseEntity<ClientDto> registerClient(@RequestHeader("authorization") String authorization, @RequestBody @Valid ClientCreateDto clientCreateDto) {
         return new ResponseEntity<>(userServis.registerClient(clientCreateDto), HttpStatus.CREATED);
     }
 
     @PutMapping("/update")
-    @CheckSecurity(roles = {"Admin", "Manager"})
+    @CheckSecurity(roles = {"Client"})
     public ResponseEntity<ClientDto> updateClient(@RequestHeader("authorization") String authorization, @RequestBody @Valid ClientUpdateDto clientUpdateDto) {
         return new ResponseEntity<>(userServis.updateClient(clientUpdateDto), HttpStatus.CREATED);
     }
