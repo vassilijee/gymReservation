@@ -27,13 +27,4 @@ public class ManagerMapper {
         return manager;
     }
 
-    public Manager managerUpdateDtoToManager(ManagerUpdateDto managerUpdateDto){
-        
-        return null;
-    }
-
-    public Manager managerBlockDtoToManager(ManagerBlockDto managerBlockDto){
-
-        return  null;
-    }
 }

@@ -29,8 +29,8 @@ public class ManagerController {
 //    }
 
     @GetMapping("/{id}")
-    @CheckSecurity(roles = {"Admin"})
-    public ResponseEntity<ManagerDto> findManagerById(@RequestHeader("authorization") String authorization, @PathVariable("id") Long id) {
+    //@CheckSecurity(roles = {"Admin"})
+    public ResponseEntity<ManagerDto> findManagerById( @PathVariable("id") Long id) {
         return new ResponseEntity<>(userServis.findManagerById(id), HttpStatus.OK);
     }
 

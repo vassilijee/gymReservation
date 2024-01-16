@@ -16,6 +16,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<Client> findClientByUsernameAndPassword(String username, String password);
 
     Optional<Client> findClientById(Long id);
+    Optional<Client> findClientByActivateCode(String activateCode);
     Optional<Manager> findManagerById(Long id);
 
 

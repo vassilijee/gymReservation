@@ -28,6 +28,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @Transactional
 public class UserServisImpl implements UserServis {
@@ -43,7 +46,7 @@ public class UserServisImpl implements UserServis {
 
     public UserServisImpl(UserRepository userRepository, UserMapper userMapper, ClientMapper clientMapper,
                           ManagerMapper managerMapper, TokenService tokenService, JmsTemplate jmsTemplate,
-                          @Value("${destination.increment.session.count}") String sendLink, MessageHelper messageHelper) {
+                          @Value("${destination.send.mail}") String sendLink, MessageHelper messageHelper) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.clientMapper = clientMapper;
@@ -82,8 +85,13 @@ public class UserServisImpl implements UserServis {
     public ClientDto registerClient(ClientCreateDto clientCreateDto) {
         Client client = clientMapper.clientCreateDtoToClient(clientCreateDto);
         userRepository.save(client);
-        SendLinkDto sendLinkDto = new SendLinkDto(client.getActivateCode(),client.getId(), client.getFirstName(), client.getLastName());
-        jmsTemplate.convertAndSend(sendLink, messageHelper.createTextMessage(sendLinkDto));
+        List<String> params = new ArrayList<>();
+        params.add(client.getFirstName());
+        params.add(client.getLastName());
+        params.add("http://localhost:8081/api/client/activate/"+client.getActivateCode());
+        EmailDto emailDto = new EmailDto(client.getEmail(), params, "Activation");
+        System.out.println(emailDto);
+        jmsTemplate.convertAndSend(sendLink,messageHelper.createTextMessage(emailDto));
         return clientMapper.clientToClientDto(client);
     }
 
@@ -98,8 +106,14 @@ public class UserServisImpl implements UserServis {
             client.setEmail(clientUpdateDto.getEmail());
         if(!clientUpdateDto.getUsername().matches(""))
             client.setUsername(clientUpdateDto.getUsername());
-        if(!clientUpdateDto.getPassword().matches(""))
+        if(!clientUpdateDto.getPassword().matches("")){
             client.setPassword(clientUpdateDto.getPassword());
+            List<String> params = new ArrayList<>();
+            params.add(client.getFirstName());
+            params.add(client.getLastName());
+            EmailDto emailDto = new EmailDto(client.getEmail(), params, "PasswordChange");
+            jmsTemplate.convertAndSend(sendLink,messageHelper.createTextMessage(emailDto));
+        }
         userRepository.save(client);
         return clientMapper.clientToClientDto(client);
     }
@@ -118,8 +132,8 @@ public class UserServisImpl implements UserServis {
     public ManagerDto registerManager(ManagerCreateDto managerCreateDto) {
         Manager manager = managerMapper.managerCreateDtoToManager(managerCreateDto);
         userRepository.save(manager);
-        SendLinkDto sendLinkDto = new SendLinkDto(manager.getActivateCode(),manager.getId(), manager.getFirstName(), manager.getLastName());
-        jmsTemplate.convertAndSend(sendLink, messageHelper.createTextMessage(sendLinkDto));
+//        SendLinkDto sendLinkDto = new SendLinkDto(manager.getActivateCode(),manager.getId(), manager.getFirstName(), manager.getLastName(), manager.getEmail());
+//        jmsTemplate.convertAndSend(sendLink, messageHelper.createTextMessage(sendLinkDto));
         return managerMapper.managerToManagerDto(manager);    }
 
     @Override
@@ -159,17 +173,10 @@ public class UserServisImpl implements UserServis {
     }
 
     @Override
-    public void activateUser(ActivateUserDto activateUserDto) {
-        User user = userRepository.findById(activateUserDto.getClientId()).get();
-        if (user.getDecriminatorValue().equalsIgnoreCase("Manager")){
-            Manager manager=(Manager)user;
-            manager.setActivate(true);
-            userRepository.save(manager);
-        }else{
-            Client client = (Client)user;
+    public void activateUser(String activateCode) {
+        Client client = userRepository.findClientByActivateCode(activateCode).get();
             client.setActivate(true);
             userRepository.save(client);
-        }
     }
 
     @Override
@@ -196,10 +203,16 @@ public class UserServisImpl implements UserServis {
 
 
 
-//        if((Manager) user.isBanned()){
-//            return  new TokenResponseDto("Nemas dozvolu da pristupis app");
-//        }
-
+        if(user.getDecriminatorValue().equals("Manager")){
+            Manager manager = (Manager) user;
+            if(manager.isBanned())
+                return  new TokenResponseDto("Nemas dozvolu da pristupis app");
+        }
+        if(user.getDecriminatorValue().equals("Client")){
+            Client client = (Client) user;
+            if(client.isBanned())
+                return  new TokenResponseDto("Nemas dozvolu da pristupis app");
+        }
 
 
         //Create token payload

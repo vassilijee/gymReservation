@@ -5,6 +5,7 @@ import com.projekat2.UserService.dto.client.ClientBlockDto;
 import com.projekat2.UserService.dto.client.ClientCreateDto;
 import com.projekat2.UserService.dto.client.ClientDto;
 import com.projekat2.UserService.dto.client.ClientUpdateDto;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -22,16 +23,12 @@ public class ClientMapper {
         client.setPassword(clientCreateDto.getPassword());
         client.setMembershipNumber(clientCreateDto.getMembershipNumber());
         client.setSessionCount(0);
+        int desiredLength = 15;
+        client.setActivateCode( RandomStringUtils.randomAlphanumeric(desiredLength));
+        client.setActivate(false);
+        client.setBanned(false);
         return client;
     }
 
-    public Client clientUpdateDtoToClient(ClientUpdateDto clientUpdateDto){
 
-        return null;
-    }
-
-    public Client clientBlockDtoToClient(ClientBlockDto clientBlockDto){
-
-        return  null;
-    }
 }

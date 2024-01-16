@@ -26,8 +26,8 @@ public class ClientController {
 //    }
 
     @GetMapping("/{id}")
-    @CheckSecurity(roles = {"Admin", "Manager"})
-    public ResponseEntity<ClientDto> findClientById(@RequestHeader("authorization") String authorization, @PathVariable("id") Long id) {
+    //@CheckSecurity(roles = {"Admin", "Manager"})
+    public ResponseEntity<ClientDto> findClientById( @PathVariable("id") Long id) {
         return new ResponseEntity<>(userServis.findClientById(id), HttpStatus.OK);
     }
 
@@ -36,9 +36,14 @@ public class ClientController {
         return new ResponseEntity<>(userServis.getCount(id), HttpStatus.OK);
     }
 
+    @GetMapping("/activate/{string}")
+    public ResponseEntity<?> activate( @PathVariable String string) {
+        userServis.activateUser(string);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @PostMapping
-    @CheckSecurity(roles = {"Client"})
-    public ResponseEntity<ClientDto> registerClient(@RequestHeader("authorization") String authorization, @RequestBody @Valid ClientCreateDto clientCreateDto) {
+    public ResponseEntity<ClientDto> registerClient(@RequestBody @Valid ClientCreateDto clientCreateDto) {
         return new ResponseEntity<>(userServis.registerClient(clientCreateDto), HttpStatus.CREATED);
     }
 
@@ -50,13 +55,13 @@ public class ClientController {
 
 
     @PutMapping("/block")
-    @CheckSecurity(roles = {"Admin", "Manager"})
+    @CheckSecurity(roles = {"Admin"})
     public ResponseEntity<ClientDto> blockClient(@RequestHeader("authorization") String authorization, @RequestBody @Valid ClientBlockDto clientBlockDto) {
         return new ResponseEntity<>(userServis.blockClient(clientBlockDto), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
-    @CheckSecurity(roles = {"Admin", "Manager"})
+    @CheckSecurity(roles = {"Admin"})
     public ResponseEntity<?> delete(@RequestHeader("authorization") String authorization, @PathVariable("id") Long id) {
         userServis.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
