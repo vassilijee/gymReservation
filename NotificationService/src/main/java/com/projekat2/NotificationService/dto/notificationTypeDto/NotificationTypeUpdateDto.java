@@ -5,16 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.NotNull;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class NotificationTypeCreateDto {
-    @NotNull
-    private String typeName;
-    @NotNull
+public class NotificationTypeUpdateDto {
+    private Long id;
     private String text;
+    private String typeName;
 }
-

@@ -4,11 +4,14 @@ package com.projekat2.NotificationService.service.serviceImpl;
 import com.projekat2.NotificationService.domain.NotificationType;
 import com.projekat2.NotificationService.dto.notificationTypeDto.NotificationTypeCreateDto;
 import com.projekat2.NotificationService.dto.notificationTypeDto.NotificationTypeDto;
+import com.projekat2.NotificationService.dto.notificationTypeDto.NotificationTypeUpdateDto;
 import com.projekat2.NotificationService.exception.NotFoundException;
 import com.projekat2.NotificationService.mapper.NotificationTypeMapper;
 import com.projekat2.NotificationService.repository.NotificationTypeRepository;
 import com.projekat2.NotificationService.service.NotificationTypeService;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,23 +29,9 @@ public class NotificationTypeServiceImplementation implements NotificationTypeSe
         this.notificationTypeMapper = notificationTypeMapper;
         this.notificationTypeRepository = notificationTypeRepository;
     }
-
     @Override
-    public NotificationTypeDto findByID(Long id) {
-        return notificationTypeRepository.findById(id).map(notificationTypeMapper::notificationTypeToNotificationTypeDto).orElseThrow(()-> new NotFoundException("Manager ciji je id:" + id + "nije pronadjen"));
-    }
-
-    @Override
-    public List<NotificationTypeDto> findAll() {
-        List<NotificationTypeDto> notificationTypeDtos = new ArrayList<>();
-
-        notificationTypeRepository.findAll().forEach(notificationType -> {
-
-            notificationTypeDtos.add(notificationTypeMapper.notificationTypeToNotificationTypeDto(notificationType));
-
-        });
-
-        return notificationTypeDtos;
+    public Page<NotificationTypeDto> findAll(Pageable pageable) {
+        return notificationTypeRepository.findAll(pageable).map(notificationTypeMapper::notificationTypeToNotificationTypeDto);
     }
 
     @Override
@@ -64,14 +53,15 @@ public class NotificationTypeServiceImplementation implements NotificationTypeSe
     }
 
     @Override
-    public NotificationTypeDto update(NotificationTypeDto notificationTypeDto) {
+    public NotificationTypeDto update(NotificationTypeUpdateDto notificationTypeUpdateDto) {
 
-        NotificationType notificationType = notificationTypeRepository.findById(notificationTypeDto.getId()).orElseThrow(()-> new NotFoundException("User ciji je id:" + notificationTypeDto.getId() + "nije pronadjen"));
-
-        notificationType.setTypeName(notificationTypeDto.getTypeName());
-
+        NotificationType notificationType = notificationTypeRepository.findById(notificationTypeUpdateDto.getId()).orElseThrow(()-> new NotFoundException("User ciji je id:" + notificationTypeUpdateDto.getId() + "nije pronadjen"));
+        if(!notificationTypeUpdateDto.getTypeName().equals(""))
+            notificationType.setTypeName(notificationTypeUpdateDto.getTypeName());
+        if(!notificationTypeUpdateDto.getText().equals(""))
+            notificationType.setText(notificationTypeUpdateDto.getText());
         notificationTypeRepository.save(notificationType);
-        return notificationTypeDto;
+        return notificationTypeMapper.notificationTypeToNotificationTypeDto(notificationType);
     }
 
 }

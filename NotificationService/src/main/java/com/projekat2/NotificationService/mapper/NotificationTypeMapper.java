@@ -15,7 +15,7 @@ public class NotificationTypeMapper {
         NotificationTypeDto notificationTypeDto = new NotificationTypeDto();
 
         notificationTypeDto.setTypeName(notificationType.getTypeName());
-
+        notificationTypeDto.setText(notificationType.getText());
 
         return notificationTypeDto;
     }
@@ -24,6 +24,7 @@ public class NotificationTypeMapper {
         NotificationType notificationType = new NotificationType();
 
         notificationType.setTypeName(notificationType.getTypeName());
+        notificationType.setText(notificationTypeCreateDto.getText());
 
         return notificationType;
     }
