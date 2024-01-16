@@ -1,14 +1,22 @@
 package com.projekat2.SessionService.repository;
 
 import com.projekat2.SessionService.domain.Session;
+import org.bouncycastle.jcajce.provider.asymmetric.rsa.CipherSpi;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+
 public interface SessionRepository  extends JpaRepository<Session, Long> {
     @Query("SELECT s FROM Session s WHERE s.free=true")
     Page<Session> findAllFreeSessions (Pageable pageable);
+
+    @Query("SELECT s FROM Session s WHERE s.date = ?1")
+    List<Session> findSessionOfTheDay(LocalDate date);
 
     @Query("SELECT s FROM Session s WHERE s.free=true AND s.exerciseType.groupType = ?1")
     Page<Session> findGroupTypeSession (String groupType, Pageable pageable);

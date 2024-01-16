@@ -23,6 +23,5 @@ public interface SessionService {
     SessionDto add(SessionCreateDto sessionCreateDto);
 
     void cancelSession(SessionCancelDto sessionCancelDto);
-
     void deleteById(Long id);
 }

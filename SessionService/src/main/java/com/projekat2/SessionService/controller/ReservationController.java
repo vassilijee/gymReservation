@@ -1,7 +1,9 @@
 package com.projekat2.SessionService.controller;
 
+import com.projekat2.SessionService.dto.reservation.ClientCancelReservationDto;
 import com.projekat2.SessionService.dto.reservation.ReservationCreateDto;
 import com.projekat2.SessionService.dto.reservation.ReservationDto;
+import com.projekat2.SessionService.secutiry.CheckSecurity;
 import com.projekat2.SessionService.service.ReservationService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,13 +31,15 @@ public class ReservationController {
     }
 
     @PostMapping
-    public ResponseEntity<ReservationDto> add(@RequestBody @Valid ReservationCreateDto reservationCreateDto) {
+    @CheckSecurity(roles = {"Client", "Manager", "Admin"})
+    public ResponseEntity<ReservationDto> add(@RequestHeader("authorization") String authorization, @RequestBody @Valid ReservationCreateDto reservationCreateDto) {
         return new ResponseEntity<>(reservationService.add(reservationCreateDto), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
-        reservationService.deleteById(id);
+    @CheckSecurity(roles = {"Client"})
+    public ResponseEntity<?> delete(@RequestHeader("authorization") String authorization,@RequestBody @Valid  ClientCancelReservationDto cancelReservationDto) {
+        reservationService.clientCancelReservation(cancelReservationDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

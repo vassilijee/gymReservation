@@ -17,5 +17,6 @@ public interface ReservationService {
 
     void deleteReservationBySessionId(Long id);
     void clientCancelReservation(ClientCancelReservationDto clientCancelReservationDto);
+    void remindeClientBySessionId(Long id);
     void deleteById(Long id);
 }
