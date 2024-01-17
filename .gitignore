@@ -28,9 +28,12 @@ SessionService/target
 NotificationService/target
 ZuulService/target
 EurekaService/target
+activeMQ/target
 
 UserService/.idea
 SessionService/.idea
 NotificationService/.idea
 ZuulService/.idea
+activeMQ/.idea
+
 EurekaService/.idea

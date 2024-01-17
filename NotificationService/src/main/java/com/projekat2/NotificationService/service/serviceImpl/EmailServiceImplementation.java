@@ -29,21 +29,23 @@ public class EmailServiceImplementation implements EmailService {
         this.mailRepository = mailRepository;
         this.mailMapper = mailMapper;
         this.mailSender = mailSender;
-        this.notificationTypeRepository=notificationTypeRepository;
+        this.notificationTypeRepository = notificationTypeRepository;
     }
 
     @Override
     public void sendSimpleMessage(String to, String subject, List<String> content) {
         SimpleMailMessage message = new SimpleMailMessage();
         NotificationType notificationType = notificationTypeRepository.findNotificationTypeByTypeName(subject).get();
-        for(int i=0; i<content.size(); i++){
-            notificationType.setText(notificationType.getText().replace("string"+(i+1), content.get(i)));
+        String text = notificationType.getText();
+        for (int i = 0; i < content.size(); i++) {
+            //notificationType.setText(notificationType.getText().replace("string"+(i+1), content.get(i)));
+            text = text.replace("string" + (i + 1), content.get(i));
         }
         Mail mail = new Mail(to, notificationType, content);
         mailRepository.save(mail);
         message.setTo(to);
         message.setSubject(notificationType.getTypeName());
-        message.setText(notificationType.getText());
+        message.setText(text);
         mailSender.send(message);
     }
 
