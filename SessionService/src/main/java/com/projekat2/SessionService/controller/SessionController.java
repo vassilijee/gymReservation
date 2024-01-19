@@ -33,20 +33,29 @@ public class SessionController {
     public ResponseEntity<Page<SessionDto>> getAllSessions(Pageable pageable) {
         return new ResponseEntity<>(sessionService.findAll(pageable), HttpStatus.OK);
     }
+
     @GetMapping("/allfree")
     public ResponseEntity<Page<SessionDto>> getAllFreeSessions(Pageable pageable) {
         return new ResponseEntity<>(sessionService.findAllFreeSessions(pageable), HttpStatus.OK);
     }
+
     //dal za svaki da se napravi poseban dto
-//    @GetMapping("/{groupType}")
-//    public ResponseEntity<Page<SessionDto>> getGroupTypeSessions(Pageable pageable) {
-//        return new ResponseEntity<>(sessionService.findGroupTypeSession(pageable), HttpStatus.OK);
-//    }
-//    @GetMapping
-//    public ResponseEntity<Page<SessionDto>> getAllSessions(Pageable pageable) {
-//        return new ResponseEntity<>(sessionService.findAll(pageable), HttpStatus.OK);
-//    }
-//    @GetMapping
+    @GetMapping("/{string}")
+    public ResponseEntity<Page<SessionDto>> getGroupTypeSessions(@PathVariable String string, Pageable pageable) {
+        return new ResponseEntity<>(sessionService.findGroupTypeSession(string, pageable), HttpStatus.OK);
+    }
+
+    @GetMapping("/type/{string}")
+    public ResponseEntity<Page<SessionDto>> getAllExerciesTypeSessions(@PathVariable String string, Pageable pageable) {
+        return new ResponseEntity<>(sessionService.findExerciesTypeSessions(string, pageable), HttpStatus.OK);
+    }
+
+    @GetMapping("/group_session/{string}/{string1}")
+    public ResponseEntity<Page<SessionDto>> getAllDayOfTheWeekSessions(@PathVariable String string, @PathVariable int string1, Pageable pageable) {
+        return new ResponseEntity<>(sessionService.findGroupTypeANDDaySessions(string, string1, pageable), HttpStatus.OK);
+    }
+
+    //    @GetMapping
 //    public ResponseEntity<Page<SessionDto>> getAllSessions(Pageable pageable) {
 //        return new ResponseEntity<>(sessionService.findAll(pageable), HttpStatus.OK);
 //    }

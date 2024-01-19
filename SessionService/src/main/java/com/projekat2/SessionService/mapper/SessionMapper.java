@@ -8,7 +8,7 @@ import com.projekat2.SessionService.repository.GymRepository;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
+import java.time.LocalTime;
 
 @Component
 public class SessionMapper {
@@ -26,7 +26,7 @@ public class SessionMapper {
 
     public SessionDto sessionToSessionDto(Session session) {
 
-        return new SessionDto(gymMapper.gymToGymDto(session.getGym()),exerciseTypeMapper.exerciseTypeToExerciseTypeDto(session.getExerciseType()), session.getCurrentCount(),session.getDate(), session.getTime());
+        return new SessionDto(gymMapper.gymToGymDto(session.getGym()), exerciseTypeMapper.exerciseTypeToExerciseTypeDto(session.getExerciseType()), session.getCurrentCount(), session.getDate(), session.getTime());
     }
 
     public Session sessionCreateDtoToSession(SessionCreateDto sessionCreateDto) {
@@ -34,8 +34,11 @@ public class SessionMapper {
         session.setCurrentCount(0);
         session.setGym(gymRepository.findById(sessionCreateDto.getGymId()).get());
         session.setExerciseType(exerciseTypeRepository.findById(sessionCreateDto.getExerciseTypeId()).get());
-        LocalDate localDate = session.getDate();
-        session.setDayOfTheWeek(localDate.getDayOfWeek().getValue());
+//        LocalDate localDate = session.getDate();
+        session.setDate(LocalDate.parse(sessionCreateDto.getDate()));
+        session.setTime(LocalTime.parse(sessionCreateDto.getTime()));
+
+        session.setDayOfTheWeek(session.getDate().getDayOfWeek().getValue());
         return session;
     }
 }

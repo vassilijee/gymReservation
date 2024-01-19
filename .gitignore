@@ -23,17 +23,18 @@
 hs_err_pid*
 replay_pid*
 
-UserService/target
-SessionService/target
-NotificationService/target
-ZuulService/target
-EurekaService/target
-activeMQ/target
+UserService/target/*
+SessionService/target/*
+NotificationService/target/*
+ZuulService/target/*
+EurekaService/target/*
+activeMQ/target/*
 
-UserService/.idea
-SessionService/.idea
-NotificationService/.idea
-ZuulService/.idea
-activeMQ/.idea
+UserService/.idea/*
+SessionService/.idea/*
+NotificationService/.idea/*
+ZuulService/.idea/*
+activeMQ/.idea/*
+EurekaService/.idea/*
 
-EurekaService/.idea
+activeMQ/activemq-data/*

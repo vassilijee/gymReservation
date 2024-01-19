@@ -20,7 +20,7 @@ public class SessionCreateDto {
     @JsonProperty("exercisetypeid")
     private Long exerciseTypeId;
     @NotBlank
-    private LocalDate date;
+    private String date;
     @NotBlank
-    private LocalTime time;
+    private String time;
 }

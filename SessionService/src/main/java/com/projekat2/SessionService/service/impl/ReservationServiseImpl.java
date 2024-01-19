@@ -74,6 +74,8 @@ public class ReservationServiseImpl implements ReservationService {
         Reservation reservation = reservationMapper.reservationCreateDtoToReservation(reservationCreateDto);
 
         Session session = sessionRepository.findById(reservation.getSession().getId()).get();
+        if(!session.isFree())
+            return new ReservationDto(null,null, null);
         session.currentCountPlus();
         if(session.getCurrentCount() == session.getExerciseType().getMaxCount())
             session.setFree(false);

@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +28,8 @@ public interface SessionRepository  extends JpaRepository<Session, Long> {
     @Query("SELECT s FROM Session s WHERE s.free=true AND s.dayOfTheWeek = ?1")
     Page<Session> findDayOfTheWeekSessions (int dayOfTheWeek, Pageable pageable);
 
+    @Query("SELECT s FROM Session s WHERE s.free=true AND s.exerciseType.name = ?1 AND s.date = ?2 AND s.time = ?3")
+    Optional<Session> findSessionTimeandDate(String typename, LocalDate date, LocalTime time);
     @Query("SELECT s FROM Session s WHERE s.free=true AND s.exerciseType.groupType = ?1 AND s.exerciseType.name = ?2")
     Page<Session> findGroupTypeANDExerciseTypeSessions (String groupType, String exerciseType, Pageable pageable);
 

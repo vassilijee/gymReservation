@@ -25,5 +25,4 @@ public class RetryConfiguration {
 
         return retryRegistry.retry("userServiceRetry");
     }
-
 }
